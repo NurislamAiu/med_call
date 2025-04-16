@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../features/home/presentation/pages/home_screen.dart';
 import 'router_paths.dart';
 import 'router_names.dart';
 
@@ -19,7 +20,7 @@ class AppRouter {
       case RouterPaths.home:
         return MaterialPageRoute(
           settings: const RouteSettings(name: RouterNames.home),
-          builder: (_) => const Placeholder(), // HomeScreen()
+          builder: (_) => HomeScreen(), // HomeScreen()
         );
       default:
         return MaterialPageRoute(
