@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "958655621444",
+    "project_id": "med-call-kz",
+    "storage_bucket": "med-call-kz.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:958655621444:android:2de5b88f977786b2184f11",
+        "android_client_info": {
+          "package_name": "com.example.med_call_patient"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYjy6kuHekUNOtEilgIAPTrNfOzGEGq0Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
