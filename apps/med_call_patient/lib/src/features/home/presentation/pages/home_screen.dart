@@ -1,144 +1,171 @@
 import 'package:flutter/material.dart';
-import 'package:med_call_patient/src/core/widgets/app_bottom_nav_bar.dart';
+import 'package:med_call_patient/src/core/widgets/custom_button.dart';
+import 'package:med_call_patient/src/core/widgets/custom_nav_bar.dart';
+import 'package:med_call_patient/src/core/widgets/custom_profile_tile.dart';
+import '../../../../core/widgets/custom_FAQ_tile.dart';
+import '../../../../core/widgets/custom_app_bar.dart';
+import '../../../../core/widgets/custom_date_picker.dart';
+import '../../../../core/widgets/custom_doctor_info_card.dart';
+import '../../../../core/widgets/custom_dropdown_button.dart';
+import '../../../../core/widgets/custom_item.dart';
+import '../../../../core/widgets/custom_notification_card.dart';
+import '../../../../core/widgets/custom_picker_card.dart';
+import '../../../../core/widgets/custom_service_tile.dart';
+import '../../../../core/widgets/custom_time_picker.dart';
+import '../../../../core/widgets/сustom_outlined_text_field.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final Color primaryColor = const Color(0xFF7BCDD1); // Голубой фон
-    final TextStyle titleStyle = Theme.of(context).textTheme.headlineMedium!.copyWith(
-      fontWeight: FontWeight.bold,
-      color: Colors.white,
-    );
-
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Верхний блок с фоном
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-              decoration: BoxDecoration(
-                color: primaryColor,
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(32),
-                  bottomRight: Radius.circular(32),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: primaryColor.withOpacity(0.3),
-                    blurRadius: 20,
-                    offset: const Offset(0, 10),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Ваше здоровье в\nнадежных руках!", style: titleStyle),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: primaryColor,
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32),
-                      ),
-                      elevation: 4,
-                    ),
-                    child: const Text("Оставить заявку"),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 32),
-
-            // Блок с кнопками "Услуги" и "Консультация"
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _FeatureButton(icon: Icons.medical_services, label: "Услуги"),
-                  _FeatureButton(icon: Icons.home_filled, label: "Консультация"),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 32),
-
-            // Почему выбирают нас
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text("Почему выбирают нас:",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 16),
-                  _AdvantageItem(icon: Icons.verified, text: "Квалифицированные специалисты"),
-                  _AdvantageItem(icon: Icons.shield, text: "Стерильность и безопасность"),
-                  _AdvantageItem(icon: Icons.access_time, text: "Доступность 24/7"),
-                  _AdvantageItem(icon: Icons.delivery_dining, text: "Быстрая доставка медикаментов"),
-                ],
-              ),
-            ),
-            const SizedBox(height: 32),
-          ],
-        ),
-      ),
-    );
-  }
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _FeatureButton extends StatelessWidget {
-  final IconData icon;
-  final String label;
+class _HomeScreenState extends State<HomeScreen> {
+  DateTime? selectedDate;
+  TimeOfDay? selectedTime;
+  Future<void> pickDate() async {
+    final picked = await showCustomDatePicker(
+      context: context,
+      initialDate: selectedDate,
+    );
+    if (picked != null) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
 
-  const _FeatureButton({required this.icon, required this.label});
-
+  Future<void> pickTime() async {
+    final picked = await showCustomTimePicker(
+      context: context,
+      initialTime: selectedTime,
+    );
+    if (picked != null) {
+      setState(() {
+        selectedTime = picked;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
-    return Column(
+    final ageController = TextEditingController();
+    return Stack(
       children: [
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: const Color(0xFFE0F7F8),
-            borderRadius: BorderRadius.circular(20),
+        Scaffold(
+          backgroundColor: Colors.white,
+          appBar: CustomAppBar(
+            title: 'Создайте заявку!',
+            subtitle: 'Выберите услугу и\nукажите дату и время',
+            onClose: () {
+              Navigator.pop(context);
+            },
           ),
-          child: Icon(icon, color: const Color(0xFF7BCDD1), size: 32),
+          body: SingleChildScrollView(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: [
+                CustomItem(icon: Icons.language, title: 'Язык', onTap: () {}),
+                SizedBox(height: 20),
+                CustomButton(text: 'text', onPressed: () {}),
+                SizedBox(height: 20),
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomPickerCard(
+                        icon: Icons.calendar_today,
+                        title: 'Выберите дату',
+                        value: '15.04.2025',
+                        onTap: () {},
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: CustomPickerCard(
+                        icon: Icons.access_time,
+                        title: 'Выберите время',
+                        value: '14:30',
+                        onTap: () {},
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                CustomDropdownCard(
+                  icon: Icons.medical_information_outlined,
+                  title: 'Услуги',
+                  options: ['Укол', 'Капельница', 'Массаж'],
+                  selectedValue: 'Укол',
+                  onChanged: (String? value) {},
+                ),
+                SizedBox(height: 20),
+                CustomNotificationCard(
+                  title: 'Напоминание о записи',
+                  message: 'У вас запись на услугу “Перевязки” сегодня в 03:46',
+                  time: '03:46',
+                  date: '16.12.2024 02:25',
+                ),SizedBox(height: 20),
+
+                CustomProfileTile(
+                  icon: Icons.calendar_month_outlined,
+                  title: 'Возраст',
+                  value: '18',
+                ),
+                SizedBox(height: 20),
+                CustomDoctorInfoCard(
+                  name: 'Бакмухамед',
+                  status: 'Свободен',
+                  specialization: 'Лор',
+                  experience: 5,
+                  rating: 4.5,
+                  phoneNumber: '+7 705 534 95 34',
+                  onPressed: () {
+                  },
+                  avatarUrl: null,
+                ),
+                SizedBox(height: 20),
+                CustomServiceTile(
+                  icon: Icons.calendar_month_outlined,
+                  title: 'Внутримышечные инъекции',
+                  price: '3000',
+                ),
+                SizedBox(height: 20),
+                CustomOutlinedTextField(
+                  label: 'Возраст',
+                  hint: '18',
+                  icon: Icons.calendar_month_outlined,
+                  controller: ageController,
+                  keyboardType: TextInputType.number,
+                ),
+                SizedBox(height: 20),
+                CustomFAQTile(
+                  question: 'Как работает приложение MedCall?',
+                  answer:
+                  'Приложение MedCall позволяет вызвать врача или медицинскую сестру (брата) на дом для представления медицинских услуг. Вы выбираете услугу, указываете адрес и время, а наш специалист приедет к вам.',
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                 onPressed: pickDate, child: Text('Дата'),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: pickTime, child: Text('Время'),
+                ),
+                SizedBox(height: 100),
+              ],
+            ),
+          ),
         ),
-        const SizedBox(height: 8),
-        Text(label, style: const TextStyle(fontWeight: FontWeight.w600, color: Color(0xFF4EA1A6))),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: CustomNavBar(
+            currentIndex: 0,
+            onTap: (int i) {},
+          ),
+        ),
       ],
-    );
-  }
-}
-
-class _AdvantageItem extends StatelessWidget {
-  final IconData icon;
-  final String text;
-
-  const _AdvantageItem({required this.icon, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: [
-          Icon(icon, color: const Color(0xFF7BCDD1)),
-          const SizedBox(width: 12),
-          Expanded(child: Text(text, style: const TextStyle(fontSize: 16))),
-        ],
-      ),
     );
   }
 }

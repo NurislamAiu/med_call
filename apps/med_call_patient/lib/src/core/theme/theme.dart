@@ -4,7 +4,6 @@ import 'text_styles.dart';
 
 class AppTheme {
   static ThemeData get light => ThemeData(
-    primaryColor: AppColors.primary,
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.white,
@@ -12,7 +11,6 @@ class AppTheme {
       elevation: 0,
     ),
     textTheme: AppTextStyles.textTheme,
-    colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
     useMaterial3: true,
   );
 }
